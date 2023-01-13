@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticketservice
+  template:
+    metadata:
+      labels:
+        app: ticketservice
+    spec:
+      containers:
+        - name: ticketservice
+          image: paruro/ticketservice:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: ticketservice
+  ports:
+  - name: ticketservice
+    protocol: TCP
+    port: 80
+    targetPort: 80 
